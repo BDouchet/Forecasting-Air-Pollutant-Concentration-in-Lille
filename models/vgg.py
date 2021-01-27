@@ -1,7 +1,8 @@
 # VGG network 
 # 9 convolutional layers
 
-from tensorflow.keras.layers import Conv1D, Dropout, BatchNormalization, AveragePooling1D, Reshape, Flatten
+from tensorflow.keras.layers import Input, Conv1D, Dropout, BatchNormalization, AveragePooling1D, Reshape, Flatten
+from tensorflow.keras import models
 
 
 def VGG(units,kernel=5,dropout=0.0,bn=True,channel=3):
