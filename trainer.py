@@ -1,7 +1,7 @@
 # Prepocess dataset and train a model
 
 import numpy as np
-from tensorflow.keras import models
+from tensorflow.keras import models,layers
 import tensorflow as tf
 
 
