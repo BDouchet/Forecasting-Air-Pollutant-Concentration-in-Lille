@@ -11,6 +11,9 @@ Many air pollutants are known to have adverse effects on the environment and hum
 
 Our study is based on data measured at the Lille Fives station (located to the East of Lille) and at the Wattignies station (in the South of Lille). The Lille Fives station is an urban background station located in a densely populated area and the Wattignies station is a peri-urban background station located on the outskirts of Lille. They are therefore representative of “urban” ambient air quality without targeting the impact of a particular emission source. The Lille Fives station measures NO2 and PM10 concentrations and the Wattignies station measures O3 concentrations.
 
+![North of France](/figures/North_France.png)
+![Lille](/figures/Lille.png)
+
 The data used for this study are hourly samples between January 1, 2013 01:00 and October 05, 2020 00:00 (N = 68,015) and concern the following pollutants: PM10, O3 and NO2. These are hourly concentrations measured in $\mu g.m^{-3}$ and are provided by [Atmo Hauts-de-France.](https://www.atmo-hdf.fr/en.html) The meteorological dataset is composed of: temperature ($°K$), pressure ($hPa$), humidity (%), wind speed ($m.s^{-1}$), wind degree (°), rain volume for last hour ($mm$) and cloudiness (%). These data come from [Open Weather Map](http://www.openweathermap.org). 
 
 About 5% of the dataset was missing, mainly because of the maintenance of the measuring devices. In addition, those missing values were usually successive for a long range (sometimes a week long). To fill these gaps, we used values from nearby stations. Between two stations we made a linear regression to find the function that best approximate the relation between the measurements, we filled those estimated values with two or three nearby stations, and we completed the last missing values with linear interpolation.
@@ -22,21 +25,32 @@ If **r**, the correlation factor, is close to 1 (or -1), it means it exists a po
 
 In terms of weather variables, the strongest positive correlation is between PM10 and pressure (0.26) and the strongest negative correlation is between PM10 and wind speed (-0.29). These correlations are explained by the fact that PM10 occurs during anticyclonic conditions. These conditions are characterized, in part, by high ground pressure and weak or no wind, which boost the accumulation of particles. The low wind speed does not allow a horizontal dispersion of particles. Similarly, ozone has a correct positive correlation with temperature (0.33). Indeed, ozone is formed in the presence of UV radiation and high temperature. Concerning nitrogen dioxide, it has his highest positive correlation with humidity (0.33) and his lowest negative correlation with temperature (-0.46) and wind speed (-0.34). As with particles, nitrogen dioxide has high concentrations in anticyclonic conditions, which explains its correlation coefficient with wind speed. In relation to its coefficients with humidity and temperature we will see later that this is due to its correlation with ozone.
 
+![Correlation Matrix](/figures/Correlation_matrix.png)
+
 ### Autocorrelation
 The autocorrelation of the three pollutants shows that the concentration of each pollutant is highly correlated with the concentration of the same pollutant a few hours earlier. This is especially true for PM10. The models used to predict the concentrations of PM10, O3 and NO2 will be better when they predict the concentrations of these pollutants shortly in advance (0 to 4 hours). Moreover, it would seem that models can also have interesting results when they predict ozone and nitrogen dioxide concentrations 24 hours ahead, as the linear correlation coefficient is relatively stronger 24 hours ahead for these two pollutants.
+
+![Autocorrelation Plot](/figures/Autocorrelation.png)
 
 ### Qualitative variable Analysis
 
 On average, a higher concentration when the wind comes from the Northeast and the East. We know that once deposited on the ground, particles can be re-suspended in the air under the action of the wind. It has been shown that particles can be transported very far by the wind, as shown by an [Airparif study](https://www.airparif.asso.fr/_pdf/publications/rapport-particules-110914.pdf) indicating that in an average situation in the Paris agglomeration, 70% of the particles come from other French or European regions. Here the high concentrations of particles are observed when the wind comes from the Northeast or from the East, it could then be the particles coming from the metropolis of Brussels located 93 km (as the crow flies) from Lille. This metropolis is, indeed, much closer to Lille than the metropolis of Paris (204 km) which would explain why the high concentrations come from the Northeast / East. 
-These high PM10 concentrations are also observed from Tuesday to Friday, i.e. during the week. As the particles are mainly emitted by vehicles and domestic heating, these concentrations can be explained by the more intense traffic during the week than on weekends. This is especially true at the level of large cities such as Lille. Looking at the variable of the months of the year, high concentrations are observed between December and May, i.e., in winter and spring. The episodes of particulate pollution in winter are due to vehicle and domestic heating emissions combined with strong anticyclonic conditions preventing the dilution of particles. Spring episodes are due to other sources such as ammonia from agricultural activities, which, combined with nitrogen oxides from vehicle emissions, can form particulate matter.
 
-Because ozone is formed with solar ultraviolet radiation and high temperatures, we observe higher concentration during the warm months. It is also the reason why ozone has higher concentrations during the day than during the night (~20% difference in average).
+![Wind Orientation](/figures/wind_orientation.png)
 
-In return, we observe that concentrations of NO2 are higher in the cold month. With lower temperatures and reduced UV radiation, NO2 does not transform into ozone, which explains its high concentrations.
+These high PM10 concentrations are also observed from Tuesday to Friday, i.e. during the week. As the particles are mainly emitted by vehicles and domestic heating, these concentrations can be explained by the more intense traffic during the week than on weekends. This is especially true at the level of large cities such as Lille. 
+
+![Days Week](/figures/Days_week.png)
+
+Looking at the variable of the months of the year, high concentrations are observed between December and May, i.e., in winter and spring. The episodes of particulate pollution in winter are due to vehicle and domestic heating emissions combined with strong anticyclonic conditions preventing the dilution of particles. Spring episodes are due to other sources such as ammonia from agricultural activities, which, combined with nitrogen oxides from vehicle emissions, can form particulate matter. Because ozone is formed with solar ultraviolet radiation and high temperatures, we observe higher concentration during the warm months. It is also the reason why ozone has higher concentrations during the day than during the night (~20% difference in average). In return, we observe that concentrations of NO2 are higher in the cold month. With lower temperatures and reduced UV radiation, NO2 does not transform into ozone, which explains its high concentrations.
+
+![Month](/figures/month.png)
 
 ### PCA
 
 Principal Component Analysis (PCA) is an operation that project the data on the most significant vectors. The core idea is to calculate the eigenvalues and their associate vectors of the correlation matrix. For visualization purposes, we plotted the plane generated by the 2 largest eigenvalues (called F1 and F2). This formatted plane allows to retain 42% of the variance. The correlation circle shows the relation between the variables. Grouped variables are positively correlated and if they are far from the origin, it means they have a good representation in the hyperplane.
+
+![Circle Correlation](/figures/circle_correlation.png)
 
 ### Atmospheric processes
 
@@ -52,7 +66,7 @@ As a result of these two reactions, but especially as a result of the first one 
 
 ### MLR 
 
-In order to select the explanatory variables that are part of the MLR models we used a method called backward selection. This method starts with all candidate independent variables in the model. At each step, the variable that is the least significant is removed. This process continues until no non-significant variables remain. Here the significance level at which variables can be removed from the model is a p-value greater than or equal to 5% (p-value ≥ 0,05), depending on the t-test. In our study, we use this method in order to obtain a model for each pollutant at t+Δt with Δt =6, 12, 24 and 48 hours (12 models in total).
+In order to select the explanatory variables that are part of the MLR models we used a method called backward selection. This method starts with all candidate independent variables in the model. At each step, the variable that is the least significant is removed. This process continues until no non-significant variables remain. Here the significance level at which variables can be removed from the model is a p-value greater than or equal to 5% (p-value ≥ 0,05), depending on the t-test. In our study, we use this method in order to obtain a model for each pollutant at t+Δt with Δt = 6, 12, 24 and 48 hours (12 models in total).
 
 ### Deep Learning Process
 
@@ -71,6 +85,13 @@ To compare the accuracy of each architecture, we calculated performance score: M
 MAE can be understood as the average difference between the predicted and the observed value while R² represents the proportion of the variance in the dependent variable that is predictable from the independent variable.
 
 ## V - Results
+
+Example of results obtained with Seq2seq GRU with Luong Attention : PM10, O3 and NO2 forecasted at 24 hours vs their ground truth.
+
+![pm10-24h](/figures/pm10_24h.png)
+![o3-24h](/figures/o3_24h.png)
+![no2-24h](/figures/no2_24h.png)
+
 
 ## VI - Analysis
 
